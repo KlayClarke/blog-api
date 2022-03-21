@@ -3,9 +3,9 @@ let Schema = mongoose.Schema;
 
 let CommentSchema = new Schema({
   text: { type: String, required: true, minlength: 1 },
+  author: { type: String, required: true },
   timestamp: { type: Date, default: Date.now() },
   post: { type: Schema.Types.ObjectId, ref: "Post" },
-  author: { type: Schema.Types.ObjectId, ref: "Author" },
 });
 
 // virtual for comment url
