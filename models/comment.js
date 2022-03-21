@@ -8,5 +8,10 @@ let CommentSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: "Author" },
 });
 
+// virtual for comment url
+CommentSchema.virtual("url").get(function () {
+  return `/posts/${this.post}/comments/${this._id}`;
+});
+
 // export comment model
 module.exports = mongoose.model("Comment", CommentSchema);
