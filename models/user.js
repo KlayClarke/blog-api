@@ -7,7 +7,6 @@ let UserSchema = new Schema({
   username: { type: String, required: true, minlength: 1 },
   password: { type: String, required: true, minlength: 1 },
   admin: { type: Boolean, default: false },
-  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 
 // virtual for user post portfolio url
