@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 let PostSchema = new Schema({
   title: { type: String, required: true, minlength: 1 },
   body: { type: String, required: true, minlength: 1 },
-  author: { type: Schema.Types.ObjectId, ref: "User" },
+  author: { type: Schema.Types.ObjectId, ref: "Author" },
   published: { type: Boolean, default: true }, // allow user to state whether they'd want to archive a post for later date publishing
   timestamp: { type: Date, default: Date.now() }, // if post is archived, timestamp will be the date of publishing
 });
