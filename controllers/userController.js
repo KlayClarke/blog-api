@@ -1,7 +1,6 @@
 let User = require("../models/user");
 let async = require("async");
 let { body, validationResult } = require("express-validator");
-const user = require("../models/user");
 
 // api calls
 
@@ -11,12 +10,12 @@ exports.api_user_list = function (req, res, next) {
     .sort("lastname")
     .exec(function (err, list_users) {
       if (err) return next(err);
-      res.json(list_users);
+      return res.json(list_users);
     });
 };
 
 // // get specific user
-exports.api_user_get = function (req, res, next) {
+exports.api_user_detail = function (req, res, next) {
   async.parallel(
     {
       user: function (callback) {
@@ -25,7 +24,7 @@ exports.api_user_get = function (req, res, next) {
     },
     function (err, results) {
       if (err) return next(err);
-      res.send(results.user);
+      return res.json(results.user);
     }
   );
 };
@@ -47,22 +46,12 @@ exports.api_user_create = [
       admin: req.body.admin,
     });
     if (!errors.isEmpty()) {
-      res.send(errors.array());
-    } else {
-      user.save(function (err) {
-        if (err) return next(err);
-        async.parallel({
-          users: function (callback) {
-            User.find({})
-              .sort("lastname")
-              .exec(function (err, list_users) {
-                if (err) return next(err);
-                res.send("User successfully created");
-              });
-          },
-        });
-      });
+      return res.send(errors.array());
     }
+    user.save(function (err) {
+      if (err) return next(err);
+      return res.send("User successfully created");
+    });
   },
 ];
 
@@ -71,14 +60,14 @@ exports.api_user_delete = function (req, res, next) {
   async.parallel(
     {
       user: function (callback) {
-        user.findById(req.params.userid).exec(callback);
+        User.findById(req.params.userid).exec(callback);
       },
     },
     function (err, results) {
       if (err) return next(err);
       User.findByIdAndDelete(req.params.userid, function () {
         if (err) return next(err);
-        res.send("User successfully deleted");
+        return res.send("User successfully deleted");
       });
     }
   );
@@ -102,12 +91,11 @@ exports.api_user_update = [
       _id: req.params.userid,
     });
     if (!errors.isEmpty()) {
-      res.send(errors.array());
-    } else {
-      User.findByIdAndUpdate(req.params.userid, user, {}, (err, theuser) => {
-        if (err) return next(err);
-        res.send("User successfully updated");
-      });
+      return res.send(errors.array());
     }
+    User.findByIdAndUpdate(req.params.userid, user, {}, (err, theuser) => {
+      if (err) return next(err);
+      return res.send("User successfully updated");
+    });
   },
 ];
