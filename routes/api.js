@@ -1,7 +1,9 @@
 let express = require("express");
-let post_controller = require("../controllers/postController");
-let user_controller = require("../controllers/userController");
 let router = express.Router();
+
+let user_controller = require("../controllers/userController");
+let post_controller = require("../controllers/postController");
+let comment_controller = require("../controllers/commentController");
 
 // USER MODEL ROUTES
 
@@ -29,24 +31,14 @@ router.delete("/posts/:postid", post_controller.api_post_delete);
 
 // COMMENT MODEL ROUTES
 
-router.get("/comments", (req, res, next) => {
-  res.send("list of all comments");
-});
+router.get("/comments", comment_controller.api_comment_list);
 
-router.get("/comments/:commentid", (req, res, next) => {
-  res.send("get comment details");
-});
+router.get("/comments/:commentid", comment_controller.api_comment_detail);
 
-router.post("/comments", (req, res, next) => {
-  res.send("create a comment");
-});
+router.post("/comments", comment_controller.api_comment_create);
 
-router.put("/comments/:commentid", (req, res, next) => {
-  res.send("edit a comment");
-});
+router.put("/comments/:commentid", comment_controller.api_comment_update);
 
-router.delete("/comments/:commentid", (req, res, next) => {
-  res.send("delete a comment");
-});
+router.delete("/comments/:commentid", comment_controller.api_comment_delete);
 
 module.exports = router;
