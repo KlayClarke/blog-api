@@ -2,19 +2,15 @@ let express = require("express");
 let user_controller = require("../controllers/userController");
 let router = express.Router();
 
-// AUTHOR MODEL ROUTES
+// USER MODEL ROUTES
 
 router.get("/users", user_controller.api_user_list);
 
 router.post("/users", user_controller.api_user_create);
 
-router.get("/users/:userid", (req, res, next) => {
-  res.send("get user details on " + req.params.userid);
-});
+router.get("/users/:userid", user_controller.api_user_get);
 
-router.put("/users/:userid", (req, res, next) => {
-  res.send("edit an user");
-});
+router.put("/users/:userid", user_controller.api_user_update);
 
 router.delete("/users/:userid", user_controller.api_user_delete);
 
